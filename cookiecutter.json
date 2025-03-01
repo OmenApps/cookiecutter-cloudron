@@ -47,6 +47,6 @@
         "cookiecutter.extensions.SlugifyExtension"
     ],
     "__prompts__": {
-        "location": "Enter the full location, including subdomain if applicable (e.g. 'mydomain.com' or 'subdomain.mydomain.com')",
+        "location": "Enter the full location, including subdomain if applicable (e.g. 'mydomain.com' or 'subdomain.mydomain.com')"
     }
 }
