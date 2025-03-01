@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row g-4">
+        {# Sidebar Navigation #}
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                 style="width: 48px; height: 48px;">
+                                {{ user.name|slice:":1"|upper }}
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0">{{ user.name }}</h6>
+                            <small class="text-muted">{{ user.email }}</small>
+                        </div>
+                    </div>
+                    
+                    <div class="nav flex-column nav-pills">
+                        <a class="nav-link {% if active_tab == 'profile' %}active{% endif %}" 
+                           href="{% url 'account_profile' %}">
+                            <i class="bi bi-person me-2"></i>
+                            {% trans "Profile" %}
+                        </a>
+                        <a class="nav-link {% if active_tab == 'security' %}active{% endif %}" 
+                           href="{% url 'account_security' %}">
+                            <i class="bi bi-shield-lock me-2"></i>
+                            {% trans "Security" %}
+                        </a>
+                        {% if socialaccount_providers %}
+                        <a class="nav-link {% if active_tab == 'connections' %}active{% endif %}" 
+                           href="{% url 'account_connections' %}">
+                            <i class="bi bi-link-45deg me-2"></i>
+                            {% trans "Connected Accounts" %}
+                        </a>
+                        {% endif %}
+                        <a class="nav-link {% if active_tab == 'email' %}active{% endif %}" 
+                           href="{% url 'account_email' %}">
+                            <i class="bi bi-envelope me-2"></i>
+                            {% trans "Email Addresses" %}
+                        </a>
+                        <a class="nav-link {% if active_tab == 'sessions' %}active{% endif %}" 
+                           href="{% url 'account_sessions' %}">
+                            <i class="bi bi-clock-history me-2"></i>
+                            {% trans "Active Sessions" %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Main Content #}
+        <div class="col-12 col-md-9">
+            {% block profile_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "account/profile/base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Security Settings" %}{% endblock %}
+
+{% block profile_content %}
+{# Password Section #}
+<div class="card shadow-sm">
+    <div class="card-header bg-transparent">
+        <h5 class="card-title mb-0">{% trans "Password" %}</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'account_change_password' %}" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            {% if password_form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in password_form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {{ password_form|crispy }}
+            
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Change Password" %}
+                    <span class="spinner-border spinner-border-sm htmx-indicator" role="status"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{# Two-Factor Authentication Section #}
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">{% trans "Two-Factor Authentication" %}</h5>
+        <span class="badge {% if user.mfa_enabled %}bg-success{% else %}bg-warning{% endif %}">
+            {% if user.mfa_enabled %}
+                {% trans "Enabled" %}
+            {% else %}
+                {% trans "Disabled" %}
+            {% endif %}
+        </span>
+    </div>
+    <div class="card-body">
+        {% if user.mfa_enabled %}
+            <p class="text-muted">
+                {% trans "Two-factor authentication is currently enabled for your account." %}
+            </p>
+            <form method="post" action="{% url 'mfa_disable' %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                    {% trans "Disable Two-Factor" %}
+                </button>
+            </form>
+        {% else %}
+            <p class="text-muted">
+                {% trans "Add an extra layer of security to your account by enabling two-factor authentication." %}
+            </p>
+            <a href="{% url 'mfa_setup' %}" class="btn btn-primary">
+                {% trans "Enable Two-Factor" %}
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{# Login History #}
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-transparent">
+        <h5 class="card-title mb-0">{% trans "Recent Login Activity" %}</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>{% trans "Date" %}</th>
+                        <th>{% trans "IP Address" %}</th>
+                        <th>{% trans "Device" %}</th>
+                        <th>{% trans "Location" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for login in login_history %}
+                    <tr>
+                        <td>{{ login.timestamp|date:"Y-m-d H:i" }}</td>
+                        <td>{{ login.ip_address }}</td>
+                        <td>{{ login.user_agent }}</td>
+                        <td>{{ login.location }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">{% trans "No recent login activity" %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

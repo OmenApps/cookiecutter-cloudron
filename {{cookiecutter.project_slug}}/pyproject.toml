@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.project_slug }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.description }}"
+authors = [
+    { name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}" },
+]
+requires-python = ">=3.10"
+dependencies = [
+    "channels~=4.2",
+    "crispy-bootstrap5>=2023.10",
+    "django-allauth[mfa]>=0.60.1",
+    "django-cors-headers>=4.3.1",
+    "django-crispy-forms>=2.1",
+    "django-csp==4.0b4",
+    "django-debug-toolbar>=4.3.0",
+    "django-environ>=0.11.2",
+    "django-extensions~=3.2",
+    "django-health-check>=3.18.1",
+    "django-htmx>=1.17.3",
+    "django-ninja>=1.1.0",
+    "django-storages[s3]>=1.12",
+    "django-template-partials>=23.4",
+    "django~=5.1",
+    "granian[reload]>=1.1.1",
+    "requests~=2.32",
+    "werkzeug>=3.0.1",
+    "whitenoise~=6.6",
+    {% if cookiecutter.database == "postgresql" %}"psycopg[binary]>=3.1.18",{% else %}"mysqlclient>=2.2.3",{% endif %}
+    {% if cookiecutter.use_scheduler == "yes" %}"celery>=5.3.6",
+    "django-celery-beat>=2.5.0",{% endif %}
+    {% if cookiecutter.use_redis == "yes" %}"django-redis>=5.4.0",{% endif %}
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "C", # flake8-comprehensions
+    "B", # flake8-bugbear
+]
+extend-ignore = [
+    "B008", # do not perform function calls in argument defaults
+]
+
+[tool.ruff.per-file-ignores]
+"tests/*" = ["E501"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "{{ cookiecutter.project_slug }}.settings"
+python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]

@@ -1,0 +1,92 @@
+{% extends "account/profile/base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Profile Settings" %}{% endblock %}
+
+{% block profile_content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-transparent">
+        <h5 class="card-title mb-0">{% trans "Profile Information" %}</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {{ form|crispy }}
+            
+            <div class="d-flex justify-content-end mt-4">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Save Changes" %}
+                    <span class="spinner-border spinner-border-sm htmx-indicator" role="status"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-transparent">
+        <h5 class="card-title mb-0">{% trans "Delete Account" %}</h5>
+    </div>
+    <div class="card-body">
+        <p class="text-muted">{% trans "Once you delete your account, there is no going back. Please be certain." %}</p>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+            {% trans "Delete Account" %}
+        </button>
+    </div>
+</div>
+
+{# Delete Account Modal #}
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% trans "Delete Account" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>{% trans "Are you absolutely sure you want to delete your account?" %}</p>
+                <p class="text-danger">{% trans "This action cannot be undone." %}</p>
+                
+                <form method="post" action="{% url 'account_delete' %}" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="confirmDelete" class="form-label">
+                            {% trans "Please type your email address to confirm:" %}
+                        </label>
+                        <input type="email" class="form-control" id="confirmDelete" 
+                               required pattern="{{ user.email|escapejs }}"
+                               placeholder="{{ user.email }}">
+                        <div class="invalid-feedback">
+                            {% trans "Please enter your correct email address." %}
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-danger" id="deleteAccountButton" disabled>
+                            {% trans "I understand, delete my account" %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('confirmDelete').addEventListener('input', function(e) {
+    const deleteButton = document.getElementById('deleteAccountButton');
+    deleteButton.disabled = e.target.value !== '{{ user.email }}';
+});
+</script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Two-Factor Authentication" %}{% endblock %}
+
+{% block content %}
+<div class="container container-sm">
+    <div class="card shadow-sm">
+        <div class="card-body p-4 p-sm-5">
+            <div class="text-center mb-4">
+                <h1 class="h3">{% trans "Two-Factor Authentication" %}</h1>
+                <p class="text-muted">
+                    {% trans "Enter the 6-digit code from your authenticator app." %}
+                </p>
+            </div>
+
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {{ form|crispy }}
+                
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Verify" %}
+                        <span class="spinner-border spinner-border-sm htmx-indicator" role="status"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

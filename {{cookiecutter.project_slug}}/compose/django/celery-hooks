@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+function on_worker_exit() {
+    echo "Celery worker exited"
+    # Add any cleanup logic here
+}
+
+function on_beat_exit() {
+    echo "Celery beat exited"
+    # Add any cleanup logic here
+}
+
+trap "on_worker_exit" EXIT
+trap "on_beat_exit" EXIT
+
+wait

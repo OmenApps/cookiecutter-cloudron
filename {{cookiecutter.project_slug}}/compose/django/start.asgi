@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+{% if cookiecutter.use_s3_storage == "no" %}
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
+{% endif %}
+
+echo "Starting Celery workers..."
+{% if cookiecutter.use_scheduler == "yes" %}
+# Start Celery worker in the background
+celery -A {{ cookiecutter.project_slug }}.celery_app worker \
+    --loglevel=info \
+    --concurrency=1 \
+    --max-memory-per-child=512000 \
+    -n worker@%%h \
+    --detach
+
+# Start Celery beat in the background
+celery -A {{ cookiecutter.project_slug }}.celery_app beat \
+    --loglevel=info \
+    --scheduler django_celery_beat.schedulers:DatabaseScheduler \
+    --detach
+{% endif %}
+
+echo "Starting Granian server..."
+exec granian {{ cookiecutter.project_slug }}.asgi:application \
+    --interface asgi \
+    --host 0.0.0.0 \
+    --port 8000 \
+    --workers {{ cookiecutter.asgi_workers }} \
+    --threads {{ cookiecutter.asgi_threads }} \
+    --blocking-threads {{ cookiecutter.blocking_threads }} \
+    --loop uvloop \
+    --log-level info \
+    --respawn-failed-workers

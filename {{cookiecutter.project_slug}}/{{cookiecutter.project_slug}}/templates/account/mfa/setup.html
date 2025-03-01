@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}{% trans "Set Up Two-Factor Authentication" %}{% endblock %}
+
+{% block content %}
+<div class="container container-sm">
+    <div class="card shadow-sm">
+        <div class="card-body p-4 p-sm-5">
+            <div class="text-center mb-4">
+                <h1 class="h3">{% trans "Set Up Two-Factor Authentication" %}</h1>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <h5>1. {% trans "Install an authenticator app" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Install an authenticator app like Google Authenticator or Authy on your mobile device." %}
+                    </p>
+                </div>
+                
+                <div class="step mt-4">
+                    <h5>2. {% trans "Scan QR code" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Use your authenticator app to scan this QR code:" %}
+                    </p>
+                    
+                    <div class="text-center my-4">
+                        <img src="{{ qr_code_url }}" alt="QR Code" class="img-fluid">
+                        
+                        <div class="mt-2">
+                            <button class="btn btn-sm btn-outline-secondary" 
+                                    onclick="utils.copyToClipboard('{{ secret_key }}')">
+                                {% trans "Copy Secret Key" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step mt-4">
+                    <h5>3. {% trans "Verify setup" %}</h5>
+                    <p class="text-muted">
+                        {% trans "Enter the 6-digit code from your authenticator app to verify the setup:" %}
+                    </p>
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        {{ form|crispy }}
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                {% trans "Verify and Enable" %}
+                                <span class="spinner-border spinner-border-sm htmx-indicator" role="status"></span>
+                            </button>
+                            
+                            <a href="{% url 'users:profile' %}" class="btn btn-outline-secondary">
+                                {% trans "Cancel" %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Toast for copied secret key #}
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="clipboard-toast" class="toast" role="alert">
+        <div class="toast-body">
+            {% trans "Secret key copied to clipboard" %}
+        </div>
+    </div>
+</div>
+{% endblock %}

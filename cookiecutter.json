@@ -1,0 +1,32 @@
+{
+    "project_name": "My Django Project",
+    "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
+    "description": "A brief description of the project",
+    "author_name": "Your Name",
+    "author_email": "you@example.com",
+    "version": "0.1.0",
+    "location": "{{ cookiecutter.project_name.lower()|replace(' ', '-')|replace('-', '-')|replace('.', '-')|trim() }}",
+    "database": ["postgresql", "mysql"],
+    "use_redis": ["yes", "no"],
+    "use_scheduler": ["yes", "no"],
+    "use_sendmail": ["yes", "no"],
+    "use_cloudron_auth": ["yes", "no"],
+    "use_s3_storage": ["yes", "no"],
+    "configure_path": "/admin/",
+    "asgi_workers": "2",
+    "asgi_threads": "2",
+    "blocking_threads": "2",
+    "memory_limit": "524288000",
+    "_copy_without_render": [
+        "*.html",
+        "*.htm",
+        "*.svg",
+        "*.js",
+        "*.css",
+        "static/*"
+    ],
+    "_extensions": ["cookiecutter.extensions.SlugifyExtension"],
+    "__prompts__": {
+        "location": "Enter the full location, including subdomain if applicable (e.g. 'mydomain.com' or 'subdomain.mydomain.com')",
+    }
+}

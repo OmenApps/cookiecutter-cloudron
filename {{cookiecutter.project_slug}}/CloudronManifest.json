@@ -1,0 +1,60 @@
+{
+    "id": "com.example.{{ cookiecutter.project_slug }}",
+    "title": "{{ cookiecutter.project_name }}",
+    "author": "{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>",
+    "description": "{{ cookiecutter.description }}",
+    "tagline": "A Django-based web application",
+    "version": "{{ cookiecutter.version }}",
+    "healthCheckPath": "/health/",
+    "httpPort": 8000,
+    "configurePath": "{{ cookiecutter.configure_path }}",
+    "memoryLimit": {{ cookiecutter.memory_limit }},
+    "addons": {
+      "localstorage": {},
+      {% if cookiecutter.database == "postgresql" %}"postgresql": {},{% else %}"mysql": {},{% endif %}
+      {% if cookiecutter.use_redis == "yes" %}
+      "redis": {
+        "noPassword": true
+      },
+      {% endif %}
+      {% if cookiecutter.use_scheduler == "yes" %}
+      "scheduler": {
+        "clearsessions": {
+          "schedule": "0 4 * * *",
+          "command": "/app/code/manage.py clearsessions"
+        },
+        "cleanup_mfa": {
+          "schedule": "0 5 * * *",
+          "command": "/app/code/manage.py cleanup_mfa"
+        },
+        "cleanup_celery": {
+          "schedule": "0 3 * * *",
+          "command": "/app/code/manage.py celery_cleanup"
+        },
+        "backup_db": {
+          "schedule": "0 1 * * *",
+          "command": "/app/code/manage.py backup_db"
+        },
+        "backup_media": {
+          "schedule": "0 2 * * *",
+          "command": "/app/code/manage.py backup_media"
+        }
+      },
+      {% endif %}
+      {% if cookiecutter.use_sendmail == "yes" %}"sendmail": {},{% endif %}
+      {% if cookiecutter.use_cloudron_auth == "yes" %}
+      "oauth": {
+        "loginRedirectUri": "/accounts/cloudron/login/callback/",
+        "logoutRedirectUri": "/",
+        "tokenSignatureAlgorithm": "RS256"
+      }
+      {% endif %}
+    },
+    "manifestVersion": 2,
+    "website": "{{ cookiecutter.location }}",
+    "contactEmail": "{{ cookiecutter.author_email }}",
+    "tags": [
+      "django",
+      "python"
+    ]
+  }

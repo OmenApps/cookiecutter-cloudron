@@ -1,0 +1,140 @@
+/* Spacing Utilities */
+.gap-xs { gap: 0.25rem; }
+.gap-sm { gap: 0.5rem; }
+.gap-md { gap: 1rem; }
+.gap-lg { gap: 1.5rem; }
+.gap-xl { gap: 2rem; }
+
+/* Typography Utilities */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.text-truncate-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Animation Utilities */
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Border Utilities */
+.border-dashed { border-style: dashed !important; }
+.border-dotted { border-style: dotted !important; }
+
+/* Hover Effects */
+.hover-lift {
+    transition: transform 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+.hover-shadow {
+    transition: box-shadow 0.2s ease;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(var(--bs-body-color-rgb), 0.15);
+}
+
+/* Focus Ring */
+.focus-ring {
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.focus-ring:focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+    outline: none;
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--bs-body-bg);
+    opacity: 0.7;
+}
+
+/* Aspect Ratios */
+.aspect-1-1 {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.aspect-16-9 {
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+.aspect-4-3 {
+    aspect-ratio: 4/3;
+    object-fit: cover;
+}
+
+/* Container Widths */
+.container-xs { max-width: 320px; }
+.container-sm { max-width: 576px; }
+.container-md { max-width: 768px; }
+
+/* Z-index Utilities */
+.z-0 { z-index: 0; }
+.z-1 { z-index: 1; }
+.z-2 { z-index: 2; }
+.z-3 { z-index: 3; }
+.z-top { z-index: 1000; }
+
+/* Form Specific */
+.form-label-required::after {
+    content: "*";
+    color: var(--bs-danger);
+    margin-left: 0.25rem;
+}
+
+.form-hint {
+    font-size: 0.875rem;
+    color: var(--bs-secondary);
+}
+
+/* Print Specific */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .print-break-before {
+        page-break-before: always;
+    }
+    
+    .print-break-after {
+        page-break-after: always;
+    }
+}

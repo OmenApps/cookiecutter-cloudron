@@ -1,0 +1,66 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Activate the virtual environment:
+. "$VIRTUAL_ENV/bin/activate"
+
+# Ensure required directories exist and have proper permissions
+mkdir -p /app/data/media /app/data/static /app/data/staticfiles /app/data/log/supervisor /app/data/run
+chown -R django:django /app/data
+
+{% if cookiecutter.database == "postgresql" %}
+# Wait for postgres
+if [ -z "${CLOUDRON_POSTGRESQL_HOST}" ]; then
+    echo "Error: CLOUDRON_POSTGRESQL_HOST environment variable is not set"
+    exit 1
+fi
+
+until pg_isready -h "${CLOUDRON_POSTGRESQL_HOST}" -p "${CLOUDRON_POSTGRESQL_PORT}"; do
+    >&2 echo "Waiting for PostgreSQL to become available..."
+    sleep 1
+done
+>&2 echo "PostgreSQL is available"
+{% else %}
+# Wait for MySQL
+if [ -z "${CLOUDRON_MYSQL_HOST}" ]; then
+    echo "Error: CLOUDRON_MYSQL_HOST environment variable is not set"
+    exit 1
+fi
+
+until mysqladmin ping -h "${CLOUDRON_MYSQL_HOST}" -P "${CLOUDRON_MYSQL_PORT}" --silent; do
+    >&2 echo "Waiting for MySQL to become available..."
+    sleep 1
+done
+>&2 echo "MySQL is available"
+{% endif %}
+
+{% if cookiecutter.use_redis == "yes" %}
+# Wait for Redis
+if [ -z "${CLOUDRON_REDIS_HOST}" ]; then
+    echo "Error: CLOUDRON_REDIS_HOST environment variable is not set"
+    exit 1
+fi
+
+until redis-cli -h "${CLOUDRON_REDIS_HOST}" -p "${CLOUDRON_REDIS_PORT}" ping; do
+    >&2 echo "Waiting for Redis to become available..."
+    sleep 1
+done
+>&2 echo "Redis is available"
+{% endif %}
+
+# If we are not in DEBUG, migrate the database
+if [ "${DEBUG}" != "True" ]; then
+    echo "Running Django migrations..."
+    python manage.py migrate --noinput
+fi
+
+# If we are not in DEBUG, collect static files
+if [ "${DEBUG}" != "True" ]; then
+    echo "Collecting static files..."
+    python manage.py collectstatic --noinput
+fi
+
+
+echo "Executing entrypoint command: $@"
+exec "$@"

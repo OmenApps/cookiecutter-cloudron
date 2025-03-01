@@ -1,0 +1,69 @@
+/* Custom Variables */
+:root {
+    --loading-indicator-size: 3rem;
+  }
+  
+  [data-bs-theme="dark"] {
+    --loading-indicator-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  [data-bs-theme="light"] {
+    --loading-indicator-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Loading Indicator */
+  .htmx-indicator {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: var(--loading-indicator-color);
+    padding: 2rem;
+    border-radius: 0.5rem;
+  }
+  
+  .htmx-request .htmx-indicator {
+    display: block;
+  }
+  
+  .htmx-request.htmx-indicator {
+    display: block;
+  }
+  
+  /* Smooth transitions for theme switching */
+  :root {
+    --bs-body-bg-transition: background-color 0.15s ease-in-out;
+  }
+  
+  .navbar,
+  .footer,
+  body {
+    transition: var(--bs-body-bg-transition);
+  }
+  
+  /* Forms */
+  .form-floating > label {
+    z-index: 3;
+  }
+  
+  /* Footer always at bottom */
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex: 1;
+  }
+  
+  /* Utilities */
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .break-word {
+    word-break: break-word;
+  }

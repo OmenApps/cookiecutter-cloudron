@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Bad Request{% endblock %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <h1 class="display-1">400</h1>
+    <p class="lead">Sorry, the request was invalid.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Return Home</a>
+</div>
+{% endblock %}
