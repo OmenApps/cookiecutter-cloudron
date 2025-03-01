@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% raw %}{% extends "base.html" %}
 
 {% block title %}Bad Request{% endblock %}
 
@@ -8,4 +8,4 @@
     <p class="lead">Sorry, the request was invalid.</p>
     <a href="{% url 'home' %}" class="btn btn-primary">Return Home</a>
 </div>
-{% endblock %}
+{% endblock %}{% endraw %}

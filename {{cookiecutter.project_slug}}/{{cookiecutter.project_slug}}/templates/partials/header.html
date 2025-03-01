@@ -1,11 +1,11 @@
-{% load static %}
+{% raw %}{% load static %}
 {% load i18n %}
 
 <header class="navbar navbar-expand-lg sticky-top bg-body-tertiary border-bottom">
     <nav class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">
             <img src="{% static 'img/logo.svg' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-            {{ cookiecutter.project_name }}
+            {% endraw %}{{ cookiecutter.project_name }}{% raw %}
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -86,4 +86,4 @@
             </ul>
         </div>
     </nav>
-</header>
+</header>{% endraw %}

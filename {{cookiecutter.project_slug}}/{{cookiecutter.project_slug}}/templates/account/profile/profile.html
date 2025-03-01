@@ -1,4 +1,4 @@
-{% extends "account/profile/base.html" %}
+{% raw %}{% extends "account/profile/base.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
 
@@ -89,4 +89,4 @@ document.getElementById('confirmDelete').addEventListener('input', function(e) {
     deleteButton.disabled = e.target.value !== '{{ user.email }}';
 });
 </script>
-{% endblock %}
+{% endblock %}{% endraw %}

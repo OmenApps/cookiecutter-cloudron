@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% raw %}{% extends "base.html" %}
 
 {% block title %}Server Error{% endblock %}
 
@@ -8,4 +8,4 @@
     <p class="lead">Sorry, something went wrong on our end.</p>
     <a href="{% url 'home' %}" class="btn btn-primary">Return Home</a>
 </div>
-{% endblock %}
+{% endblock %}{% endraw %}

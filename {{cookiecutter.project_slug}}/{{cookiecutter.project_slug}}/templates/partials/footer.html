@@ -1,10 +1,10 @@
-<footer class="footer mt-auto py-3 bg-body-tertiary border-top">
+{% raw %}<footer class="footer mt-auto py-3 bg-body-tertiary border-top">
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-4">
-                <h5>{{ cookiecutter.project_name }}</h5>
+                <h5>{% endraw %}{{ cookiecutter.project_name }}{% raw %}</h5>
                 <small class="text-body-secondary">
-                    &copy; {% now "Y" %} {{ cookiecutter.author_name }}
+                    &copy; {% now "Y" %} {% endraw %}{{ cookiecutter.author_name }}{% raw %}
                 </small>
             </div>
             
@@ -20,7 +20,7 @@
             <div class="col-6 col-md-4">
                 <h5>Contact</h5>
                 <ul class="list-unstyled">
-                    <li><a href="mailto:{{ cookiecutter.author_email }}" class="text-decoration-none">Email Us</a></li>
+                    <li><a href="mailto:{% endraw %}{{ cookiecutter.author_email }}{% raw %}" class="text-decoration-none">Email Us</a></li>
                     {% if request.user.is_staff %}
                         <li><a href="{% url 'admin:index' %}" class="text-decoration-none">Admin</a></li>
                     {% endif %}
@@ -28,4 +28,4 @@
             </div>
         </div>
     </div>
-</footer>
+</footer>{% endraw %}
