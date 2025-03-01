@@ -36,8 +36,8 @@
     "blocking_threads": "2",
     "memory_limit": "1073741824",
     "_copy_without_render": [
-        "*.html",
-        "*.htm",
+        "*.png",
+        "*.jpg",
         "*.svg",
         "*.js",
         "*.css",
