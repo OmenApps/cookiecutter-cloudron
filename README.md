@@ -85,6 +85,11 @@ The generated project includes a Docker Compose configuration for local developm
    docker compose exec web python manage.py createsuperuser
    ```
 
+5. Collect static files:
+   ```bash
+   docker compose exec web python manage.py collectstatic
+   ```
+
 5. Access your application at http://localhost:8000
 
 ## Building and Deploying to Cloudron
