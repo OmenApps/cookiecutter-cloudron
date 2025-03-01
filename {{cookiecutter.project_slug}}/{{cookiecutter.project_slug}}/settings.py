@@ -40,7 +40,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-change-this-in-pr
 DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS")
-CSRF_TRUSTED_ORIGINS = env("DJANGO_CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = env("DJANGO_CSRF_TRUSTED_ORIGINS") if isinstance(env("DJANGO_CSRF_TRUSTED_ORIGINS"), list) else [env("DJANGO_CSRF_TRUSTED_ORIGINS")]
 
 # Ensure the correct header is set for HTTPS
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

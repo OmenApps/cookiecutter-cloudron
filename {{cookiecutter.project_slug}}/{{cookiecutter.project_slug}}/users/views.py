@@ -12,4 +12,4 @@ logger = logging.getLogger(__name__)
 def profile_view(request):
     """View for the user's profile page."""
     logger.info("Profile view accessed.")
-    return JsonResponse({"username": request.user.username, "email": request.user.email})
+    return JsonResponse({"name": request.user.name, "email": request.user.email})

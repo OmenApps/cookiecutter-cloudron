@@ -33,8 +33,10 @@ urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     
     # Your app URLs
+    path("", TemplateView.as_view(template_name="base.html"), name="home"),
     path("", include("{{ cookiecutter.project_slug }}.common.urls")),
-    path("users/", include("{{ cookiecutter.project_slug }}.users.urls")),
+    path("users/", include("{{ cookiecutter.project_slug }}.users.urls", namespace="users")),
+
 ]
 
 # Static/Media files in development
